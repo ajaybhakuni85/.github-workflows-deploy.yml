@@ -11,19 +11,20 @@ jobs:
     
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: decode SSH
         run: |
-          echo "${{ secrets.EC2_SSH_KEY_BASE64 }}" | base64 -d > private_key.pem
+          echo "${{ secrets.EC2_SSH_KEY }}" | base64 -d > private_key.pem
           chmod 600 private_key.pem
       
       - name: Copy Files to EC2
-        uses: appleboy/scp-action@v0.1.7
+        uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
-          key: ${{ secrets.EC2_SSH_KEY }}
+          key: private_key.pem
+          port: 22
           source: "./*"
           target: "/usr/share/nginx/html"
           overwrite: true
