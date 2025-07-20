@@ -23,7 +23,7 @@ jobs:
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
-          key: private_key.pem
+          key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           source: "./*"
           target: "/usr/share/nginx/html"
@@ -37,7 +37,7 @@ jobs:
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
-          key: private_key.pem
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
            sudo systemctl restart nginx
           
