@@ -27,10 +27,7 @@ jobs:
           port: 22
           source: "./*"
           target: "/usr/share/nginx/html"
-          overwrite: true
-          strip_component: 0
           debug: true
-          disable_strict_host_key_checking: true
           
       - name: Restart ngnix
         uses: appleboy/ssh-action@master
