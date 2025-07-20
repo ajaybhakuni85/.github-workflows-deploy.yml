@@ -13,10 +13,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: decode SSH
-        run: |
-          echo "${{ secrets.EC2_SSH_KEY }}" | base64 -d > private_key.pem
-          chmod 600 private_key.pem
+      # - name: decode SSH
+      #   run: |
+      #     echo "${{ secrets.EC2_SSH_KEY }}" | base64 -d > private_key.pem
+      #     chmod 600 private_key.pem
       
       - name: Copy Files to EC2
         uses: appleboy/scp-action@v1
