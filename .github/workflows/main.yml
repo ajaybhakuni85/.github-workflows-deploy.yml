@@ -14,14 +14,18 @@ jobs:
         uses: actions/checkout@v3
         
       - name: Copy Files to EC2
-        uses: appleboy/scp-action@v0.1.9
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "./*"
           target: "/usr/share/nginx/html"
-
+          overwrite: true
+          strip_component: 0
+          debug: true
+          disable_strict_host_key_checking: true
+          
       - name: Restart ngnix
         uses: appleboy/ssh-action@master
         with:
