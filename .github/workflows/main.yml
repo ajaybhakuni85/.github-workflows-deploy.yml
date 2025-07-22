@@ -1,4 +1,4 @@
-name: Deploy to EC2
+name: Portfolio Website
 
 on:
   push:
@@ -13,28 +13,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: decode SSH
-        run: |
-          echo "${{ secrets.EC2_SSH_KEY }}" | base64 --decode > ec2_key.pem
-          chmod 600 ec2_key.pem
-      
-      - name: Copy Files to EC2
-        uses: appleboy/scp-action@v1
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ec2-user
-          key: ec2_key.pem
-          port: 22
-          source: "./*"
-          target: "/usr/share/nginx/html"
-          overwrite: true
-          
-      - name: Restart ngnix
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ec2-user
-          key: ec2_key.pem
-          script: |
-           sudo systemctl restart nginx
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-key-id: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy static website to S3
+        run: aws s3 sync . s3://demo-bucket-bucketpolicy  --delete
+        
+        
           
