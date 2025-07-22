@@ -15,7 +15,7 @@ jobs:
 
       - name: decode SSH
         run: |
-          echo "${{ secrets.EC2_SSH_KEY }}" > ec2_key.pem
+          echo "${{ secrets.EC2_SSH_KEY }}" | bse64 --decode > ec2_key.pem
           chmod 600 ec2_key.pem
       
       - name: Copy Files to EC2
